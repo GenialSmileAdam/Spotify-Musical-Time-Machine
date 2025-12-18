@@ -114,7 +114,7 @@ def create_spotify_playlist(songs, time):
 
     sp.playlist_add_items(
         playlist_id=playlist_id,
-        items=songs_list,)
+        items=songs_list)
 
     print(f"\nPlaylist created successfully!\nI managed to add {no_of_songs} songs")
 
