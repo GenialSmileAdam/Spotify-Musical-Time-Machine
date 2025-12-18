@@ -130,7 +130,7 @@ def program_run():
     time_taken = round((stop - start)/ 60, 2)
     print(f"The Program took {time_taken} minutes to execute")
     query = input("\n\nDo you want to create another playlist? (Yes or No): ")
-    if query.lower() == "yes":
+    if query.lower() == "yes" or query.lower() == "y":
         program_run()
 
 program_run()
