@@ -8,6 +8,7 @@ import datetime as dt
 import os
 from dotenv import load_dotenv
 import time as cronos
+import json
 
 load_dotenv(".env")
 
@@ -15,9 +16,10 @@ now = dt.datetime.now().year
 print(TITLE_TEXT)
 CLIENT_ID = os.getenv("CLIENT_ID")
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")
-
-header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:131.0) "
-                        "Gecko/20100101 Firefox/131.0"}
+HEADER = json.loads(os.getenv("HEADER"))
+USERNAME = os.getenv("USERNAME")
+USER_ID = os.getenv("USER_ID")
+TOKEN_FILE_PATH = os.getenv("TOKEN_FILE_PATH")
 
 def time_of_songs():
     year=int(input("what year would you like to travel back to?: "))
@@ -43,7 +45,7 @@ def time_of_songs():
 
 
 def webscrape_billboard_charts(url):
-    response = requests.get(url, headers=header)
+    response = requests.get(url, headers= HEADER)
     response.raise_for_status()
     file = response.text
 
@@ -70,19 +72,19 @@ def create_spotify_playlist(songs, time):
         client_id=CLIENT_ID,
         client_secret=CLIENT_SECRET,
         redirect_uri= redirect_url,
-        cache_path="token.txt",
-        username="Jason Hughes",
+        cache_path=TOKEN_FILE_PATH,
+        username=USERNAME,
         show_dialog=True
     ))
     # GETS USER ID!!!!
     # user_id = sp.current_user()["id"]
     # pprint(user_id)
-    user_id = os.getenv("USER_ID")
-    playlist = sp.user_playlist_create(user=user_id,
-                                         name=f"Top 100 Songs of {time[0]}",
-                                         public=False,
-                                         description=f"Top 100 songs of {time[0]} gotten from "
-                                                     f"Billboard charts" )
+
+    playlist = sp.user_playlist_create(user=USER_ID,
+                                       name=f"Top 100 Songs of {time[0]}",
+                                       public=False,
+                                       description=f"Top 100 songs of {time[0]} gotten from "
+                                                     f"Billboard charts")
     playlist_id = playlist["id"]
     print("searching for songs.....")
 
